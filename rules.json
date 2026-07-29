@@ -1,0 +1,30 @@
+{
+    "version": "1.0",
+    "generated_at": "2026-07-29T09:08:34.705827Z",
+    "rules": [
+        {
+            "id": "vwar-feed-bot-001",
+            "group_id": "scanner",
+            "name": "VWAR Threat Feed - Malicious Scanners",
+            "description": "Auto-updated list of known vulnerability scanners and scrapers.",
+            "pattern": "(?i)(sqlmap|nikto|masscan|zgrab|zmap|nmap|gobuster|dirbuster|wpscan|nuclei|httpx)",
+            "target": "REQUEST_HEADERS",
+            "action": "BLOCK",
+            "severity": "HIGH",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "vwar-feed-lfi-001",
+            "group_id": "traversal",
+            "name": "VWAR Threat Feed - LFI Payloads",
+            "description": "Auto-updated list of sensitive OS paths targeted by LFI/Path Traversal.",
+            "pattern": "(?i)(etc/passwd|etc/shadow|windows/system32/cmd\\.exe|boot\\.ini|proc/self/environ|var/log/auth\\.log)",
+            "target": "REQUEST_URI",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        }
+    ]
+}
