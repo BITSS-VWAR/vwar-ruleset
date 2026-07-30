@@ -1,17 +1,12 @@
 {
     "version": "1.0",
-    "generated_at": "2026-07-30T11:48:22.420074+00:00",
+    "generated_at": "2026-07-30T12:17:16.391466+00:00",
     "license": "Public Domain / CC0 (FireHOL IPsets)",
     "attribution": "FireHOL Level1 & Level2 IP Reputation Feed",
     "sources": {
         "firehol_commit": "bce515ad55a64061919f2d3f4e93f476bb60990c"
     },
     "ips": [
-        {
-            "ip": "0.0.0.0/8",
-            "category": "MALICIOUS",
-            "score": 90
-        },
         {
             "ip": "1.0.164.165",
             "category": "MALICIOUS",
@@ -269,11 +264,6 @@
         },
         {
             "ip": "1.95.91.114",
-            "category": "MALICIOUS",
-            "score": 90
-        },
-        {
-            "ip": "10.0.0.0/8",
             "category": "MALICIOUS",
             "score": 90
         },
@@ -27723,11 +27713,6 @@
             "score": 90
         },
         {
-            "ip": "127.0.0.0/8",
-            "category": "MALICIOUS",
-            "score": 90
-        },
-        {
             "ip": "128.0.83.186",
             "category": "MALICIOUS",
             "score": 90
@@ -46293,11 +46278,6 @@
             "score": 90
         },
         {
-            "ip": "169.254.0.0/16",
-            "category": "MALICIOUS",
-            "score": 90
-        },
-        {
             "ip": "169.255.187.234",
             "category": "MALICIOUS",
             "score": 90
@@ -47499,11 +47479,6 @@
         },
         {
             "ip": "172.125.52.71",
-            "category": "MALICIOUS",
-            "score": 90
-        },
-        {
-            "ip": "172.16.0.0/12",
             "category": "MALICIOUS",
             "score": 90
         },
@@ -62193,16 +62168,6 @@
             "score": 90
         },
         {
-            "ip": "192.0.0.0/24",
-            "category": "MALICIOUS",
-            "score": 90
-        },
-        {
-            "ip": "192.0.2.0/24",
-            "category": "MALICIOUS",
-            "score": 90
-        },
-        {
             "ip": "192.100.22.0/24",
             "category": "MALICIOUS",
             "score": 90
@@ -62824,11 +62789,6 @@
         },
         {
             "ip": "192.163.244.125",
-            "category": "MALICIOUS",
-            "score": 90
-        },
-        {
-            "ip": "192.168.0.0/16",
             "category": "MALICIOUS",
             "score": 90
         },
@@ -67138,11 +67098,6 @@
             "score": 90
         },
         {
-            "ip": "198.18.0.0/15",
-            "category": "MALICIOUS",
-            "score": 90
-        },
-        {
             "ip": "198.180.189.0/24",
             "category": "MALICIOUS",
             "score": 90
@@ -69384,11 +69339,6 @@
         },
         {
             "ip": "198.49.124.0/24",
-            "category": "MALICIOUS",
-            "score": 90
-        },
-        {
-            "ip": "198.51.100.0/24",
             "category": "MALICIOUS",
             "score": 90
         },
