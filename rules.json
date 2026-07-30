@@ -1,6 +1,6 @@
 {
     "version": "2.0",
-    "generated_at": "2026-07-30T05:33:48.278897+00:00",
+    "generated_at": "2026-07-30T11:48:33.715179+00:00",
     "license": "Apache-2.0 (OWASP CRS) / MIT (SecLists)",
     "attribution": "OWASP CRS v3.3.4 & SecLists by Daniel Miessler",
     "sources": {
@@ -878,7 +878,7 @@
             "name": "OWASP CRS 932170",
             "description": "Remote Command Execution: Shellshock (CVE-2014-6271)",
             "pattern": "^\\(\\s*\\)\\s+{",
-            "target": "REQUEST_HEADERS",
+            "target": "REQUEST_ARGS",
             "action": "BLOCK",
             "severity": "CRITICAL",
             "is_enabled": 1,
