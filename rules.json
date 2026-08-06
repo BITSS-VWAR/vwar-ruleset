@@ -1,12 +1,74 @@
 {
     "version": "2.0",
-    "generated_at": "2026-08-06T05:41:50.547244+00:00",
+    "generated_at": "2026-08-06T06:57:09.126254+00:00",
     "license": "Apache-2.0 (OWASP CRS) / MIT (SecLists)",
     "attribution": "OWASP CRS v3.3.4 & SecLists by Daniel Miessler",
     "sources": {
         "crs_commit": "d694d465951ee06347214f1291ae096e40700001",
         "seclists_commit": "bfa9146e6d9d3ebb3d5d4a8096c60182da009204"
     },
+    "groups": [
+        {
+            "id": "scanner",
+            "name": "Scanner & Bot Protection",
+            "description": "Blocks automated scanner user-agents, automated scraping tools, and script libraries"
+        },
+        {
+            "id": "sqli",
+            "name": "SQL Injection Protection",
+            "description": "Detects database injection and queries manipulation attempts"
+        },
+        {
+            "id": "xss",
+            "name": "Cross-Site Scripting Protection",
+            "description": "Detects script injection, malicious DOM manipulation, and HTML events injection"
+        },
+        {
+            "id": "rce",
+            "name": "Remote Code Execution Protection",
+            "description": "Detects system command execution, reverse shell binaries, and PHP/web shell payloads"
+        },
+        {
+            "id": "traversal",
+            "name": "Path Traversal & LFI Protection",
+            "description": "Detects directory climbing, local file inclusion, and sensitive OS path access"
+        },
+        {
+            "id": "rfi",
+            "name": "Remote File Inclusion Protection",
+            "description": "Detects remote file inclusion payloads and file fetch attempts"
+        },
+        {
+            "id": "php",
+            "name": "PHP Injection Protection",
+            "description": "Detects PHP code injection and web shell payloads"
+        },
+        {
+            "id": "session",
+            "name": "Session & Cookie Protection",
+            "description": "Detects session fixation, cookie tampering, and auth bypass payloads"
+        },
+        {
+            "id": "java",
+            "name": "Java/OGNL Injection Protection",
+            "description": "Detects Java expression (OGNL/EL) injection payloads"
+        },
+        {
+            "id": "protocol",
+            "name": "Protocol & Request Smuggling Protection",
+            "description": "Detects HTTP protocol violations, request smuggling, and header injection"
+        },
+        {
+            "id": "generic",
+            "name": "Generic Injection Protection",
+            "description": "Detects generic injection payloads and code execution attempts not covered by specialized rule groups, including LDAP injection and server-side request forgery"
+        },
+        {
+            "id": "multipart",
+            "name": "Multipart Attack Protection",
+            "description": "Detects multipart/form-data boundary and MIME header manipulation attacks used to evade WAF inspection"
+        }
+    ],
     "rules": [
         {
             "id": "excl-wordpress-admin",
@@ -1149,11 +1211,275 @@
             "is_builtin": 1
         },
         {
+            "id": "crs-921110",
+            "group_id": "protocol",
+            "name": "OWASP CRS 921110",
+            "description": "HTTP Request Smuggling Attack",
+            "pattern": "(?:get|p(?:(?:os|u)t|atch|rop(?:find|atch))|head|options|co(?:nnect|py)|delete|trac[ek]|m(?:kcol|ove)|(?:un)?lock)[\\s\\x0b]+[^\\s\\x0b]+[\\s\\x0b]+http/[0-9]",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-921120",
+            "group_id": "protocol",
+            "name": "OWASP CRS 921120",
+            "description": "HTTP Response Splitting Attack",
+            "pattern": "[\\n\\r][^0-9A-Z_a-z]*?(?:content-(?:type|length)|set-cookie|location):[\\s\\x0b]*[0-9A-Z_a-z]",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-921130",
+            "group_id": "protocol",
+            "name": "OWASP CRS 921130",
+            "description": "HTTP Response Splitting Attack",
+            "pattern": "(?:\\bhttp/\\d|<(?:html|meta)\\b)",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-921140",
+            "group_id": "protocol",
+            "name": "OWASP CRS 921140",
+            "description": "HTTP Header Injection Attack via headers",
+            "pattern": "[\\n\\r]",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-921150",
+            "group_id": "protocol",
+            "name": "OWASP CRS 921150",
+            "description": "HTTP Header Injection Attack via payload (CR/LF detected)",
+            "pattern": "[\\n\\r]",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-921160",
+            "group_id": "protocol",
+            "name": "OWASP CRS 921160",
+            "description": "HTTP Header Injection Attack via payload (CR/LF and header-name detected)",
+            "pattern": "[\\n\\r]+(?:[\\s\\x0b]|location|re(?:fresh|mote-(?:ip|addr))|(?:set-)?cookie|forwarded-(?:(?:fo|serve)r|host)|host|via|originating-IP|x-(?:forwarded-(?:(?:fo|serve)r|host)|host|via|remote-(?:ip|addr)|originating-IP))[\\s\\x0b]*:",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-921190",
+            "group_id": "protocol",
+            "name": "OWASP CRS 921190",
+            "description": "HTTP Splitting (CR/LF in request filename detected)",
+            "pattern": "[\\n\\r]",
+            "target": "REQUEST_URI",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-921200",
+            "group_id": "protocol",
+            "name": "OWASP CRS 921200",
+            "description": "LDAP Injection Attack",
+            "pattern": "^[^!&\\(\\):<>\\|~]*\\)[\\s\\x0b]*(?:\\((?:[^!&\\(\\),<->\\|~]+[<>~]?=|[\\s\\x0b]*[!&\\|][\\s\\x0b]*[\\(\\)]?[\\s\\x0b]*)|\\)[\\s\\x0b]*\\([\\s\\x0b]*[!&\\|][\\s\\x0b]*|[!&\\|][\\s\\x0b]*\\([^!&\\(\\),<->\\|~]+[<>~]?=[^!&\\(\\):<>\\|~]*)",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-921421",
+            "group_id": "protocol",
+            "name": "OWASP CRS 921421",
+            "description": "Content-Type header: Dangerous content type outside the mime type declaration",
+            "pattern": "^[^\\s\\x0b,;]+[\\s\\x0b,;].*?(?:application/(?:.+\\+)?json|(?:application/(?:soap\\+)?|text/)xml)",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-921240",
+            "group_id": "protocol",
+            "name": "OWASP CRS 921240",
+            "description": "mod_proxy attack attempt detected",
+            "pattern": "unix:[^|]*\\|",
+            "target": "REQUEST_URI",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-921170",
+            "group_id": "protocol",
+            "name": "OWASP CRS 921170",
+            "description": "OWASP CRS Rule 921170",
+            "pattern": ".",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "HIGH",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
             "id": "crs-913100",
             "group_id": "scanner",
             "name": "OWASP CRS 913100",
             "description": "Found User-Agent associated with security scanner",
             "pattern": "(arachni|betabot|bewica\\-security\\-scan|BFAC|commix|Detectify|dirbuster|fimap|fuzz\\ faster|whatwaf|gobuster|havij|hexometer|jbrofuzz|jorgee|libwhisker|masscan|morfeus|Mozlila|Mozilla/5\\.g|nessus|netlab360|netsparker|nettacker|nikto|nmap|nuclei|openvas|securityagent|sitelockspider|sqlmap|sysscan|TsunamiSecurityScanner|w3af\\.org|webbandit|webshag|wfuzz|whatweb|wprecon|wpscan|feroxbuster|l9explore|l9tcpid|wapiti|vega|appspider|ironwasp|skipfish|qualysguard|n\\-stalker|acunetix|cmsmap|sqlninja|xsstrike|xsser|joomscan|droopescan|zgrab|Ghauri|zmeu|WPProbe|SSTIMap|Mozilla/4\\.0\\ \\(Hydra\\)|tplmap|DotDotPwn|shortscan|Kadimus|LFISuite|Mozilla/5\\.0\\ \\(compatible;\\ Panoptic|LFImap|graphw00f|graphql\\-cop|jSQL|noseyparker|TruffleHog|YesWeHack\\-Hunter|TInjA|Mozilla/5\\.0\\ \\(compatible;\\ AppScan;)",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-934100",
+            "group_id": "generic",
+            "name": "OWASP CRS 934100",
+            "description": "Node.js Injection Attack 1/2",
+            "pattern": "_(?:\\$\\$ND_FUNC\\$\\$_|_js_function)|(?:\\beval|new[\\s\\x0b]+Function[\\s\\x0b]*)\\(|(?:String\\.fromCharCod|Module:prototyp)e|function\\(\\)\\{|this\\.constructor|module\\.exports=|\\([\\s\\x0b]*[^0-9A-Z_a-z]child_process[^0-9A-Z_a-z][\\s\\x0b]*\\)|cons(?:tructor:constructor|ole(?:\\.(?:(?:debu|lo)g|error|info|trace|warn)(?:\\.call)?\\(|\\[[\\\"'`](?:(?:debu|lo)g|error|info|trace|warn)[\\\"'`]\\]))|process(?:\\.(?:(?:a(?:ccess|ppendfile|rgv|vailability)|c(?:aveats|h(?:mod|own)|(?:los|opyfil)e|p|reate(?:read|write)stream)|ex(?:ec(?:file)?|ists)|f(?:ch(?:mod|own)|data(?:sync)?|s(?:tat|ync)|utimes)|inodes|l(?:chmod|ink|stat|utimes)|mkd(?:ir|temp)|open(?:dir)?|r(?:e(?:ad(?:dir|file|link|v)?|name)|m)|s(?:pawn(?:file)?|tat|ymlink)|truncate|u(?:n(?:link|watchfile)|times)|w(?:atchfile|rite(?:file|v)?))(?:sync)?(?:\\.call)?\\(|binding|constructor|env|global|main(?:Module)?|process|require)|\\[[\\\"'`](?:(?:a(?:ccess|ppendfile|rgv|vailability)|c(?:aveats|h(?:mod|own)|(?:los|opyfil)e|p|reate(?:read|write)stream)|ex(?:ec(?:file)?|ists)|f(?:ch(?:mod|own)|data(?:sync)?|s(?:tat|ync)|utimes)|inodes|l(?:chmod|ink|stat|utimes)|mkd(?:ir|temp)|open(?:dir)?|r(?:e(?:ad(?:dir|file|link|v)?|name)|m)|s(?:pawn(?:file)?|tat|ymlink)|truncate|u(?:n(?:link|watchfile)|times)|w(?:atchfile|rite(?:file|v)?))(?:sync)?|binding|constructor|env|global|main(?:Module)?|process|require)[\\\"'`]\\])|(?:binding|constructor|env|global|main(?:Module)?|process|require)\\[|require(?:\\.(?:resolve(?:\\.call)?\\(|main|extensions|cache)|\\[[\\\"'`](?:(?:resolv|cach)e|main|extensions)[\\\"'`]\\])",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-934110",
+            "group_id": "generic",
+            "name": "OWASP CRS 934110",
+            "description": "Possible Server Side Request Forgery (SSRF) Attack: Cloud provider metadata URL in Parameter",
+            "pattern": "(http://instance\\-data/latest/|http://169\\.254\\.169\\.254/latest/|http://2852039166/latest/|http://025177524776/latest/|http://0251\\.0376\\.0251\\.0376/latest/|http://0xA9\\.0xFE\\.0xA9\\.0xFE/latest/|http://0xA9FEA9FE/latest/|http://0251\\.254\\.169\\.254/latest/|http://\\[::ffff:a9fe:a9fe\\]/latest/|http://\\[0:0:0:0:0:ffff:a9fe:a9fe\\]/latest/|http://\\[0:0:0:0:0:ffff:169\\.254\\.169\\.254\\]/latest/|http://169\\.254\\.169\\.254\\.nip\\.io/latest/|http://nicob\\.net/redir\\-http\\-169\\.254\\.169\\.254:80\\-|http://2130706433/|http://3232235521/|http://3232235777/|http://2852039166/|http://\\[::\\]:|http://localtest\\.me|http://127\\.0\\.0\\.1\\.nip\\.io|http://127\\.127\\.127\\.127|http://127\\.0\\.1\\.3|http://127\\.0\\.0\\.0|http://127\\.0\\.0\\.1|http://0\\.0\\.0\\.0|http://localhost|http://0177\\.0\\.0\\.1/|http://\\[::1\\]|http://\\[0000::1\\]|http://\\[::ffff:127\\.0\\.0\\.1\\]|http://\\[0:0:0:0:0:ffff:127\\.0\\.0\\.1\\]|http://0/|http://127\\.1|http://127\\.0\\.1|http:127\\.0\\.0\\.1|http://169\\.254\\.170\\.2/v2|http://169\\.254\\.169\\.254/computeMetadata/v1/|http://metadata\\.google\\.internal/computeMetadata/v1/|http://metadata/computeMetadata/v1/|http://2852039166/computeMetadata/v1/|http://025177524776/computeMetadata/v1/|http://0251\\.0376\\.0251\\.0376/computeMetadata/v1/|http://\\[::ffff:a9fe:a9fe\\]/computeMetadata/v1/|http://\\[0:0:0:0:0:ffff:a9fe:a9fe\\]/computeMetadata/v1/|http://\\[0:0:0:0:0:ffff:169\\.254\\.169\\.254\\]/computeMetadata/v1/|http://169\\.254\\.169\\.254\\.nip\\.io/computeMetadata/v1/|http://0xA9\\.0xFE\\.0xA9\\.0xFE/computeMetadata/v1/|http://0xA9FEA9FE/computeMetadata/v1/|http://0251\\.254\\.169\\.254/computeMetadata/v1/|gopher://metadata\\.google\\.internal|http://metadata\\.google\\.internal/computeMetadata/v1/instance/disks/\\?recursive=true|http://metadata\\.google\\.internal/computeMetadata/v1beta1/|http://169\\.254\\.169\\.254/metadata/v1\\.json|https://metadata\\.packet\\.net/userdata|http://169\\.254\\.169\\.254/metadata/v1/|http://169\\.254\\.169\\.254/metadata/instance\\?api\\-version=2017\\-04\\-02|http://169\\.254\\.169\\.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress\\?api\\-version=2017\\-04\\-02\\&format=text|http://2852039166/metadata/v1/|http://025177524776/metadata/v1/|http://0251\\.0376\\.0251\\.0376/metadata/v1/|http://\\[::ffff:a9fe:a9fe\\]/metadata/v1/|http://\\[0:0:0:0:0:ffff:a9fe:a9fe\\]/metadata/v1/|http://\\[0:0:0:0:0:ffff:169\\.254\\.169\\.254\\]/metadata/v1/|http://169\\.254\\.169\\.254\\.nip\\.io/metadata/v1/|http://0xA9\\.0xFE\\.0xA9\\.0xFE/metadata/v1/|http://0xA9FEA9FE/metadata/v1/|http://0251\\.254\\.169\\.254/metadata/v1/|http://169\\.254\\.169\\.254/openstack|http://169\\.254\\.169\\.254/2009\\-04\\-04/meta\\-data/|http://192\\.0\\.0\\.192/latest/|http://100\\.100\\.100\\.200/latest/meta\\-data/|http://rancher\\-metadata/|http://127\\.0\\.0\\.1:2375|http://2130706433:2375/|http://\\[::\\]:2375/|http://\\[0000::1\\]:2375/|http://\\[0:0:0:0:0:ffff:127\\.0\\.0\\.1\\]:2375/|http://2130706433:2375/|http://017700000001:2375/|http://0x7f000001:2375/|http://0xc0a80014:2375/|http://127\\.0\\.0\\.1:2379|http://169\u3002254\u3002169\u3002254|http://169\uff61254\uff61169\uff61254|http://\u246f\u2468\u3002\u2461\u2464\u2463\u3002\u246f\u2468\uff61\u2461\u2464\u2463|http://\u24ea\u24e7\u24d0\u2468\uff61\u24ea\u24e7\u24d5\u24d4\uff61\u24ea\u24e7\u24d0\u2468\uff61\u24ea\u24e7\u24d5\u24d4|http://\u24ea\u24e7\u24d0\u2468\u24d5\u24d4\u24d0\u2468\u24d5\u24d4|http://\u2461\u2467\u2464\u2461\u24ea\u2462\u2468\u2460\u2465\u2465|http://\u2463\u2461\u2464\uff61\u2464\u2460\u24ea\uff61\u2463\u2461\u2464\uff61\u2464\u2460\u24ea|http://\u24ea\u2461\u2464\u2460\u3002\u24ea\u2462\u2466\u2465\u3002\u24ea\u2461\u2464\u2460\u3002\u24ea\u2462\u2466\u2465|http://\u24ea\u24ea\u2461\u2464\u2460\uff61\u24ea\u24ea\u24ea\u2462\u2466\u2465\uff61\u24ea\u24ea\u24ea\u24ea\u2461\u2464\u2460\uff61\u24ea\u24ea\u24ea\u24ea\u24ea\u2462\u2466\u2465|http://\\[::\u2460\u2465\u2468\uff61\u2461\u2464\u2463\uff61\u246f\u2468\uff61\u2461\u2464\u2463\\]|http://\\[::\u24d5\u24d5\u24d5\u24d5:\u2460\u2465\u2468\u3002\u2461\u2464\u2463\u3002\u246f\u2468\u3002\u2461\u2464\u2463\\]|http://\u24ea\u24e7\u24d0\u2468\u3002\u24ea\u2462\u2466\u2465\u3002\u2463\u2462\u2464\u2460\u2467|http://\u24ea\u24e7\u24d0\u2468\uff61\u246f\u2465\u2467\u2468\u2465\u2465\u2461|http://\u24ea\u24ea\u2461\u2464\u2460\u3002\u246f\u2465\u2467\u2468\u2465\u2465\u2461|http://\u24ea\u24ea\u2461\u2464\u2460\uff61\u24ea\u24e7\u24d5\u24d4\uff61\u2463\u2462\u2464\u2460\u2467|jar:http://127\\.0\\.0\\.1!/|jar:https://127\\.0\\.0\\.1!/|jar:ftp://127\\.0\\.0\\.1!/)",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-934190",
+            "group_id": "generic",
+            "name": "OWASP CRS 934190",
+            "description": "Possible Server Side Request Forgery (SSRF) Attack: Scheme-less localhost or internal hostname detected",
+            "pattern": "(localhost/|localhost\\.localdomain/|localhost4/|localhost4\\.localdomain4/|ipv6\\-localhost/|ip6\\-loopback/|host\\.docker\\.internal/|gateway\\.docker\\.internal/|kubernetes\\.docker\\.internal/|host\\.containers\\.internal/|kubernetes\\.default\\.svc\\.cluster\\.local/|localtest\\.me/|lvh\\.me/)",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-934130",
+            "group_id": "generic",
+            "name": "OWASP CRS 934130",
+            "description": "JavaScript Prototype Pollution",
+            "pattern": "__proto__|constructor[\\s\\x0b]*(?:\\.|\\]?\\[)[\\s\\x0b]*prototype",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-934150",
+            "group_id": "generic",
+            "name": "OWASP CRS 934150",
+            "description": "Ruby Injection Attack",
+            "pattern": "Process[\\s\\x0b]*\\.[\\s\\x0b]*spawn[\\s\\x0b]*\\(",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-934160",
+            "group_id": "generic",
+            "name": "OWASP CRS 934160",
+            "description": "Node.js DoS attack",
+            "pattern": "while[\\s\\x0b]*\\([\\s\\x0b\\(]*(?:!+(?:false|null|undefined|NaN|[\\+\\-]?0|\\\"{2}|'{2}|`{2})|(?:!!)*(?:(?:t(?:rue|his)|[\\+\\-]?(?:Infinity|[1-9][0-9]*)|new [A-Za-z][0-9A-Z_a-z]*|window|String|(?:Boolea|Functio)n|Object|Array)\\b|\\{[^\\}]*\\}|\\[[^\\]]*\\]|\\\"[^\\\"]+\\\"|'[^']+'|`[^`]+`)).*\\)",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-934170",
+            "group_id": "generic",
+            "name": "OWASP CRS 934170",
+            "description": "PHP data scheme attack",
+            "pattern": "^(?:json\\.)?data:(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*(?:[\\s\\x0b]*,[\\s\\x0b]*(?:(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)/(?:\\*|[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]+)|\\*)(?:[\\s\\x0b]*;[\\s\\x0b]*(?:charset[\\s\\x0b]*=[\\s\\x0b]*\\\"?(?:iso-8859-15?|utf-8|windows-1252)\\b\\\"?|(?:[^\\s\\x0b-\\\"\\(\\),/:-\\?\\[-\\]c\\{\\}]|c(?:[^!\\\"\\(\\),/:-\\?\\[-\\]h\\{\\}]|h(?:[^!\\\"\\(\\),/:-\\?\\[-\\]a\\{\\}]|a(?:[^!\\\"\\(\\),/:-\\?\\[-\\]r\\{\\}]|r(?:[^!\\\"\\(\\),/:-\\?\\[-\\]s\\{\\}]|s(?:[^!\\\"\\(\\),/:-\\?\\[-\\]e\\{\\}]|e[^!\\\"\\(\\),/:-\\?\\[-\\]t\\{\\}]))))))[^!\\\"\\(\\),/:-\\?\\[-\\]\\{\\}]*[\\s\\x0b]*=[\\s\\x0b]*[^!\\(\\),/:-\\?\\[-\\]\\{\\}]+);?)*)*",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-934200",
+            "group_id": "generic",
+            "name": "OWASP CRS 934200",
+            "description": "Server-Side Template Injection (SSTI) Attack",
+            "pattern": "(?:\\{\\{[^\\}]*?(?:[\\(\\*]|__)[^\\}]*?\\}|#\\{[^\\}]*?(?:[\\(\\*]|__)[^\\}]*?)\\}|<%=?[\\s\\x0b]*[^%]*?(?:[\\(\\*]|__)[^%]*?%>",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-922150",
+            "group_id": "multipart",
+            "name": "OWASP CRS 922150",
+            "description": "OWASP CRS Rule 922150",
+            "pattern": "^content-type\\s*:\\s*(.*)$",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "HIGH",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-922120",
+            "group_id": "multipart",
+            "name": "OWASP CRS 922120",
+            "description": "Content-Transfer-Encoding was deprecated by rfc7578 in 2015 and should not be used",
+            "pattern": "content-transfer-encoding:(.*)",
+            "target": "REQUEST_ARGS",
+            "action": "BLOCK",
+            "severity": "CRITICAL",
+            "is_enabled": 1,
+            "is_builtin": 1
+        },
+        {
+            "id": "crs-922130",
+            "group_id": "multipart",
+            "name": "OWASP CRS 922130",
+            "description": "Multipart header contains characters outside of valid range",
+            "pattern": "[^\\x21-\\x7E][\\x21-\\x39\\x3B-\\x7E]*:",
             "target": "REQUEST_ARGS",
             "action": "BLOCK",
             "severity": "CRITICAL",
