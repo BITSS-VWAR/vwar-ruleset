@@ -1,11 +1,11 @@
 {
     "version": "2.0",
-    "generated_at": "2026-08-12T04:43:27.574142+00:00",
+    "generated_at": "2026-08-13T04:46:47.975948+00:00",
     "license": "Apache-2.0 (OWASP CRS) / MIT (SecLists)",
     "attribution": "OWASP CRS v3.3.4 & SecLists by Daniel Miessler",
     "sources": {
         "crs_commit": "096f6890cbbd1037c56b28602942e7ee731f41ec",
-        "seclists_commit": "adac983fee29cbcc90871f61c559521544091d22"
+        "seclists_commit": "598b4198d5db91783660edfeb645b7402da98e8e"
     },
     "groups": [
         {
