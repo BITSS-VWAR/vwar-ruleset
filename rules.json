@@ -1,11 +1,11 @@
 {
     "version": "2.0",
-    "generated_at": "2026-09-02T07:30:48.706737+00:00",
+    "generated_at": "2026-09-03T07:37:26.380981+00:00",
     "license": "Apache-2.0 (OWASP CRS) / MIT (SecLists)",
     "attribution": "OWASP CRS v3.3.4 & SecLists by Daniel Miessler",
     "sources": {
-        "crs_commit": "96d9f99043b89f07fb5a4fdad1d7effbbbbcec1a",
-        "seclists_commit": "7b0b0b85564f68c25c24e16ca117fa75524558f4"
+        "crs_commit": "3fabfc3220536270e8d139eb4000b7e40b3ca926",
+        "seclists_commit": "d4b994e52e57f33efbbd5d416493eb8ded8db099"
     },
     "groups": [
         {
@@ -1443,7 +1443,7 @@
             "group_id": "generic",
             "name": "OWASP CRS 934200",
             "description": "Server-Side Template Injection (SSTI) Attack",
-            "pattern": "(?:\\{\\{[^\\}]*?(?:[\\(\\*]|__)[^\\}]*?\\}|#\\{[^\\}]*?(?:[\\(\\*]|__)[^\\}]*?)\\}|<%=?[\\s\\x0b]*[^%]*?(?:[\\(\\*]|__)[^%]*?%>",
+            "pattern": "\\{\\{[^\\}]*?(?:[\\(\\*]|__)[^\\}]*?\\}\\}|#(?:\\{[^\\}]*?(?:[\\(\\*]|__)[^\\}]*?\\}|[0-9A-Z_a-z]+[\\s\\x0b]*\\([\\s\\x0b]*\\$[^\\)]*?(?:[\\(\\*]|__)[^\\)]*?\\))|<(?:%=?[\\s\\x0b]*[^%]*?(?:[\\(\\*]|__)[^%]*?%|[#@][0-9A-Z_a-z]+[^>]*?(?:[\\(\\*]|__)[^>]*?)>",
             "target": "REQUEST_ARGS",
             "action": "BLOCK",
             "severity": "CRITICAL",
